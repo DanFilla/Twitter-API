@@ -1,0 +1,45 @@
+	Doug Jones - 239548513
+	Kyrsten Sinema - 20747881
+	Dianne Feinstein - 476256944
+	Kamala Harris - 30354991
+	Michael Bennet - 45645232
+	Richard Blumenthal - 278124059
+	Chris Murphy - 150078976
+	Tom Carper - 381577682
+	Chris Coons - 15324851
+	Brian Schatz - 47747074
+	Mazie Hirono - 92186819
+	Dick Durbin - 247334603
+	Tammy Duckworth - 1058520120
+	Ben Cardin - 109071031
+	Chris Van Hollen - 18137749
+	Elizabeth Warren - 970207298
+	Ed Markey - 1129029661
+	Debbie Stabenow - 76456274
+	Gary Peters - 145292853
+	Amy Klobuchar - 33537967
+	Tina Smith - 47724293
+	Jon Tester - 515822213
+	Catherine Cortez Masto - 3145735852
+	Jacky Rosen - 4749863113
+	Jeanne Shaheen - 14125897
+	Maggie Hassan - 946549322
+	Bob Menendez - 18695134
+	Cory Booker - 15808765
+	Tom Udall - 60828944
+	Martin Heinrich - 1099199839
+	Chuck Schumer - 17494010
+	Kirsten Gillibrand - 899978622416695297
+	Sherrod Brown - 43910797
+	Ron Wyden - 250188760
+	Jeff Merkley - 223166587
+	Bob Casey Jr. - 171598736
+	Jack Reed - 486694111
+	Sheldon Whitehouse - 242555999
+	Patrick Leahy - 242836537
+	Mark Warner - 7429102
+	Tim Kaine - 172858784
+	Patty Murray - 293131808
+	Maria Cantwell - 35567751
+	Joe Manchin - 234374703
+	Tammy Baldwin - 87510313
