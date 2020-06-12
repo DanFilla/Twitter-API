@@ -3,6 +3,7 @@ import threading
 import logging
 import datetime
 import time
+import os
 from classes.StreamClass import MyStreamListener
 
 logging.basicConfig(filename="../../logging-files/dem_logs.log")
@@ -24,6 +25,14 @@ myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 
 dem_id_list = []
 
+with open("../data/dem_data/dem_status_data.csv", "a") as csv_file:
+    if os.stat("../data/dem_data/dem_status_data.csv") == 0:
+        fieldnames = ["user_name", "status", "datetime"]
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+    else:
+        pass
+
 #parse through senator data file to get twitter user id
 with open("../data/dem_data/dem_ids.txt", "r") as data:
     for line in data:
@@ -37,7 +46,7 @@ with open("../data/dem_data/dem_ids.txt", "r") as data:
 
 while(1):
     try:
-        print("re-connecting...")
+        print("connecting...")
         myStream.filter(dem_id_list)
     except:
         pass
