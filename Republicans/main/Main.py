@@ -3,6 +3,8 @@ import threading
 import logging
 import datetime
 import time
+import os
+import csv
 from classes.StreamClass import MyStreamListener
 
 logging.basicConfig(filename='../../logging-files/rep_logs.log')
@@ -24,6 +26,14 @@ myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 
 rep_id_list = []
 
+with open("../data/rep_data/rep_status_data.csv", "a") as csv_file:
+    if os.stat("../data/rep_data/rep_status_data.csv") == 0:
+        fieldnames = ["user_name", "status", "datetime"]
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+    else:
+        pass
+
 #parse through senator data file to get twitter user id
 with open("../data/rep_data/rep_ids.txt", "r") as data:
     for line in data:
@@ -41,5 +51,6 @@ while(1):
     except:
         pass
 
+    print("trying...")
     logging.error(f"Republican Stream Failed {datetime.datetime.now()}")
     time.sleep(10)

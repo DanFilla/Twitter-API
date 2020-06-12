@@ -1,5 +1,6 @@
 import tweepy
 import datetime
+import csv
 
 def from_creator(status):
     if hasattr(status, 'retweeted_status'):
@@ -15,33 +16,32 @@ def from_creator(status):
 
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
+        fieldnames = ["user_name", "status", "datetime"]
+        opened_file = open("../data/rep_data/rep_status_data.csv", "a")
+        tweet_data = csv.DictWriter(opened_file, fieldnames=fieldnames)
+
+        user_name = status._json['user']['name']
+        date_time = datetime.datetime.now()
 
         if (from_creator(status)):
 
-            tweet_data = open("../data/rep_data/rep_status_data.txt", "a")
-
             print("Some douche-bag tweeted!!!")
+            print(user_name)
 
-            print(status._json['user']['name'])
-
-
-            # tweet_data.write("\n")
-            # tweet_data.write("****************************")
-            # tweet_data.write("\n")
             if hasattr(status, "retweeted_status"):
                 try:
-                    # tweet_data.write(status.retweeted_status.extended_tweet["full_text"])
+                    extended_user_status = status.retweeted_status.extended_tweet["full_text"]
+                    tweet_data.writerow({"user_name": user_name, 'status': extended_user_status, 'datetime': date_time})
                 except AttributeError:
-                    # tweet_data.write(status.retweeted_status.text)
+                    user_status = status.retweeted_status.text
+                    tweet_data.writerow({"user_name": user_name, 'status': user_status, 'datetime': date_time})
 
             else:
                 try:
-                    # tweet_data.write(status.extended_tweet["full_text"])
+                    extended_user_status = status.extended_tweet["full_text"]
+                    tweet_data.writerow({"user_name": user_name, 'status': extended_user_status, 'datetime': date_time})
                 except AttributeError:
-                    # tweet_data.write(status.text)
-            # tweet_data.write("\n")
-            # tweet_data.write("****************************")
-            # tweet_data.write("\n")
-            # tweet_data.close()
+                    user_status = status.text
+                    tweet_data.writerow({"user_name": user_name, 'status': user_status, 'datetime': date_time})
         else:
             print(f"ignored status {datetime.datetime.now()}")
