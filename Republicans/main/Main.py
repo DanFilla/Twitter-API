@@ -1,9 +1,11 @@
 import tweepy
 import threading
-try:
-    from classes.StreamClass import MyStreamListener
-except ImportError:
-    print("Did not import")
+import logging
+import datetime
+import time
+from classes.StreamClass import MyStreamListener
+
+logging.basicConfig(filename='../../logging-files/rep_logs.log')
 
 consumer_key = "O440GKDKaFDlouDj5nutK0d6N"
 consumer_secret = "byeBjTsocrXgNoBW8XMv4p1jUGVU6SUTMv1UhzQAfaSLFYV1a4"
@@ -33,4 +35,11 @@ with open("../data/rep_data/rep_ids.txt", "r") as data:
             except ValueError:
                 continue
 
-myStream.filter(rep_id_list)
+while(1):
+    try:
+        myStream.filter(rep_id_list)
+    except:
+        pass
+
+    logging.error(f"Republican Stream Failed {datetime.datetime.now()}")
+    time.sleep(10)

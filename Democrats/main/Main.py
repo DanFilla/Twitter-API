@@ -1,7 +1,11 @@
 import tweepy
 import threading
 import logging
+import datetime
+import time
 from classes.StreamClass import MyStreamListener
+
+logging.basicConfig(filename="../../logging-files/dem_logs.log")
 
 consumer_key = "O440GKDKaFDlouDj5nutK0d6N"
 consumer_secret = "byeBjTsocrXgNoBW8XMv4p1jUGVU6SUTMv1UhzQAfaSLFYV1a4"
@@ -30,8 +34,14 @@ with open("../data/dem_data/dem_ids.txt", "r") as data:
                 dem_id_list.append(str(word))
             except ValueError:
                 continue
-try:
-    myStream.filter(dem_id_list)
-except:
 
+while(1):
+    try:
+        print("re-connecting...")
+        myStream.filter(dem_id_list)
+    except:
+        pass
+
+    logging.error(f"Democate Stream Failed {datetime.datetime.now()}")
+    time.sleep(10)
 
