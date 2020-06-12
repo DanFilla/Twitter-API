@@ -25,23 +25,23 @@ class MyStreamListener(tweepy.StreamListener):
             print(status._json['user']['name'])
 
 
-            tweet_data.write("\n")
-            tweet_data.write("****************************")
-            tweet_data.write("\n")
+            # tweet_data.write("\n")
+            # tweet_data.write("****************************")
+            # tweet_data.write("\n")
             if hasattr(status, "retweeted_status"):
                 try:
-                    tweet_data.write(status.retweeted_status.extended_tweet["full_text"])
+                    # tweet_data.write(status.retweeted_status.extended_tweet["full_text"])
                 except AttributeError:
-                    tweet_data.write(status.retweeted_status.text)
+                    # tweet_data.write(status.retweeted_status.text)
 
             else:
                 try:
-                    tweet_data.write(status.extended_tweet["full_text"])
+                    # tweet_data.write(status.extended_tweet["full_text"])
                 except AttributeError:
-                    tweet_data.write(status.text)
-            tweet_data.write("\n")
-            tweet_data.write("****************************")
-            tweet_data.write("\n")
-            tweet_data.close()
+                    # tweet_data.write(status.text)
+            # tweet_data.write("\n")
+            # tweet_data.write("****************************")
+            # tweet_data.write("\n")
+            # tweet_data.close()
         else:
             print(f"ignored status {datetime.datetime.now()}")
