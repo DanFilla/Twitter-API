@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/Users/dan/Desktop/Twitter-API/keys')
 import tweepy
 import threading
 import logging
@@ -5,15 +7,10 @@ import datetime
 import time
 import os
 import csv
+from secret_keys import *
 from classes.StreamClass import MyStreamListener
 
 logging.basicConfig(filename='../../logging-files/rep_logs.log')
-
-consumer_key = "O440GKDKaFDlouDj5nutK0d6N"
-consumer_secret = "byeBjTsocrXgNoBW8XMv4p1jUGVU6SUTMv1UhzQAfaSLFYV1a4"
-
-key = "1083113049568038924-lMexUYQA0r06vwunKoSwhufa9QG4Es"
-secret = "jIT1NclZ4zd8nY5IA2hc7MabBPrussrECVDMtZrtBYcaW"
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(key, secret)
