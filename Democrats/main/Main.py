@@ -1,9 +1,13 @@
+import sys
+sys.path.append('/Users/dan/Desktop/Twitter-API/keys')
+print(sys.path)
 import tweepy
 import threading
 import logging
 import datetime
 import time
 import os
+import secret_keys
 from classes.StreamClass import MyStreamListener
 
 logging.basicConfig(filename="../../logging-files/dem_logs.log")
