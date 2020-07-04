@@ -44,7 +44,7 @@ with open("Republicans/data/rep_data/rep_ids.txt", "r") as data:
 
 while(1):
     try:
-        print("connecting...")
+        print("connecting to Republican stream...")
         myStream.filter(rep_id_list)
     except:
         pass

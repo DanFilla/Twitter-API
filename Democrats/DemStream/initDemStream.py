@@ -40,7 +40,7 @@ with open("Democrats/data/dem_data/dem_ids.txt", "r") as data:
 
 while(1):
     try:
-        print("connecting...")
+        print("connecting to Democate Stream...")
         myStream.filter(dem_id_list)
     except:
         pass

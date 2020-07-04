@@ -2,8 +2,6 @@ import tweepy
 import datetime
 import csv
 
-print("im here!!!")
-
 def from_creator(status):
     if hasattr(status, 'retweeted_status'):
         return False
