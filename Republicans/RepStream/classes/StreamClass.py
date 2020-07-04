@@ -17,7 +17,7 @@ def from_creator(status):
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         fieldnames = ["user_name", "status", "datetime"]
-        opened_file = open("../data/rep_data/rep_status_data.csv", "a")
+        opened_file = open("Republicans/data/rep_data/rep_status_data.csv", "a")
         tweet_data = csv.DictWriter(opened_file, fieldnames=fieldnames)
 
         user_name = status._json['user']['name']

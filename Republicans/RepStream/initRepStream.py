@@ -1,16 +1,16 @@
 import sys
 sys.path.append('/Users/dan/Desktop/Twitter-API/keys')
-print(sys.path)
 import tweepy
 import threading
 import logging
 import datetime
 import time
 import os
+import csv
 from secret_keys import *
-from classes.StreamClass import MyStreamListener
+from Republicans.RepStream.classes.StreamClass import MyStreamListener
 
-logging.basicConfig(filename="../../logging-files/dem_logs.log")
+logging.basicConfig(filename='logging-files/rep_logs.log')
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(key, secret)
@@ -21,34 +21,33 @@ myStreamListener = MyStreamListener()
 
 myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 
-dem_id_list = []
+rep_id_list = []
 
-with open("../data/dem_data/dem_status_data.csv", "a") as csv_file:
-    if os.stat("../data/dem_data/dem_status_data.csv") == 0:
-        fieldnames = ["user_name", "status", "datetime"]
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
-    else:
-        pass
+# with open("Republican/data/rep_data/rep_status_data.csv", "a") as csv_file:
+    # if os.stat("Republican/data/rep_data/rep_status_data.csv") == 0:
+        # fieldnames = ["user_name", "status", "datetime"]
+        # writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        # writer.writeheader()
+    # else:
+        # pass
 
 #parse through senator data file to get twitter user id
-with open("../data/dem_data/dem_ids.txt", "r") as data:
+with open("Republicans/data/rep_data/rep_ids.txt", "r") as data:
     for line in data:
         line = line.split()
         for word in line:
             try:
                 int(word)
-                dem_id_list.append(str(word))
+                rep_id_list.append(str(word))
             except ValueError:
                 continue
 
 while(1):
     try:
         print("connecting...")
-        myStream.filter(dem_id_list)
+        myStream.filter(rep_id_list)
     except:
         pass
 
-    logging.error(f"Democate Stream Failed {datetime.datetime.now()}")
+    logging.error(f"Republican Stream Failed {datetime.datetime.now()}")
     time.sleep(10)
-

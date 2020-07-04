@@ -2,6 +2,8 @@ import tweepy
 import datetime
 import csv
 
+print("im here!!!")
+
 def from_creator(status):
     if hasattr(status, 'retweeted_status'):
         return False
@@ -17,11 +19,12 @@ def from_creator(status):
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         fieldnames = ["user_name", "status", "datetime"]
-        opened_file = open("../data/dem_data/dem_status_data.csv", "a")
+        opened_file = open("Democrats/data/dem_data/dem_status_data.csv", "a")
         tweet_data = csv.DictWriter(opened_file, fieldnames=fieldnames)
 
         user_name = status._json['user']['name']
         date_time = datetime.datetime.now()
+
 
         if (from_creator(status)):
 
