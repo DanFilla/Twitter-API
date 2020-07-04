@@ -3,6 +3,8 @@
 
 # In[49]:
 
+import tweepy
+
 import sys
 sys.path.append('/Users/dan/Desktop/Twitter-API/keys')
 from secret_keys import *
@@ -17,68 +19,134 @@ import schedule
 import time
 plt.close('all')
 
+# def job():
+    # dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
+    # rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data.csv")
+
+    # rep_date_list = []
+    # for i in range(len(rep_df['datetime'])):
+        # rep_date_list.append(datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour)
+
+    # dem_date_list = []
+    # for j in range(len(dem_df['datetime'])):
+        # dem_date_list.append(datetime.datetime.strptime(dem_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").hour)
+
+
+    # current_date = datetime.datetime.now().strftime('%m-%d-%y')
+
+    # #needs to be 24 hours.
+    # date_range = pd.date_range(start='06-12-2020', end=current_date, freq='1H').day
+    # print(date_range)
+
+    # # Find out how many tweets were tweeted on each day
+    # # For the Republicans
+    # temp = set(rep_date_list)
+    # rep_freq_list = []
+
+    # for x in temp:
+        # rep_freq_list.append(rep_date_list.count(x))
+
+    # temp = list(temp)
+    # print(rep_freq_list)
+
+    # # Find out how many tweets were tweeted on each day
+    # # For the Democrats
+    # temp = set(dem_date_list)
+    # dem_freq_list = []
+
+    # for x in temp:
+        # dem_freq_list.append(dem_date_list.count(x))
+
+    # temp = list(temp)
+
+    # print(dem_freq_list)
+
+    # plt.plot(date_range, rep_freq_list, label="Republican", color='r')
+    # plt.plot(date_range, dem_freq_list, label="Democrat", color='b')
+    # plt.legend(loc="upper left")
+    # plt.xlabel("Dates")
+    # plt.ylabel("Number of Tweets")
+    # # plt.show()
+
+
+    # auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    # auth.set_access_token(key, secret)
+
+    # api = tweepy.API(auth)
+
+    # api.media_upload(plt.show())
+
+
 def job():
-    dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
-    rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data.csv")
+    dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data_former.csv")
+    rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data_former.csv")
 
-    rep_date_list = []
-    for i in range(len(rep_df['datetime'])):
-        rep_date_list.append(datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour)
+    #Democrate day and hour tweet dataframe. key = day value = hour.
+    dem_date_list = {}
 
-    dem_date_list = []
     for j in range(len(dem_df['datetime'])):
-        dem_date_list.append(datetime.datetime.strptime(dem_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").hour)
+        day = datetime.datetime.strptime(dem_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").day
+        dem_date_list[day] = []
 
+    for i in range(len(dem_df['datetime'])):
+        day = datetime.datetime.strptime(dem_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").day
+        hour = datetime.datetime.strptime(dem_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour
+        dem_date_list[day] = dem_date_list.get(day) + [hour]
 
-    current_date = datetime.datetime.now().strftime('%m-%d-%y')
+    #Republican day and hour tweet dataframe. key = day
+    #                                         value = array of the hours each tweet was tweeted.
+    rep_date_list = {}
 
-    #needs to be 24 hours.
-    date_range = pd.date_range(start='06-12-2020', end=current_date, freq='1H').day
-    print(date_range)
+    for j in range(len(rep_df['datetime'])):
+        day = datetime.datetime.strptime(rep_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").day
+        rep_date_list[day] = []
 
-    # Find out how many tweets were tweeted on each day
-    # For the Republicans
-    temp = set(rep_date_list)
-    rep_freq_list = []
+    for i in range(len(rep_df['datetime'])):
+        day = datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").day
+        hour = datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour
+        rep_date_list[day] = rep_date_list.get(day) + [hour]
 
-    for x in temp:
-        rep_freq_list.append(rep_date_list.count(x))
+    hour_range = range(0, 24)
 
-    temp = list(temp)
-    print(rep_freq_list)
+    #TODO set current date!!!
+    rep_temp = set(rep_date_list.get(17))
+    dem_temp = set(dem_date_list.get(17))
 
-    # Find out how many tweets were tweeted on each day
-    # For the Democrats
-    temp = set(dem_date_list)
-    dem_freq_list = []
+    rep_tweet_count = []
+    dem_tweet_count = []
 
-    for x in temp:
-        dem_freq_list.append(dem_date_list.count(x))
+    for num in hour_range:
+        if num not in rep_temp:
+            rep_tweet_count.append(0)
+        else:
+            rep_tweet_count.append(rep_date_list.get(18).count(num))
 
-    temp = list(temp)
+        if num not in dem_temp:
+            dem_tweet_count.append(0)
+        else:
+            dem_tweet_count.append(dem_date_list.get(18).count(num))
 
-    print(dem_freq_list)
-
-    plt.plot(date_range, rep_freq_list, label="Republican", color='r')
-    plt.plot(date_range, dem_freq_list, label="Democrat", color='b')
+    #Save the plot
+    plt.plot(hour_range, rep_tweet_count, label="Republican", color="r")
+    plt.plot(hour_range, dem_tweet_count, label="Democrats", color="b")
     plt.legend(loc="upper left")
-    plt.xlabel("Dates")
+    plt.xlabel("Hours")
     plt.ylabel("Number of Tweets")
-    # plt.show()
 
+    today = datetime.datetime.today()
+    today = today.strftime(today.strftime("%b-%d-%Y"))
 
+    plt.savefig(f"{today}_hourplt.png", bbox_inches="tight")
+
+    # Tweet the plot.
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(key, secret)
 
     api = tweepy.API(auth)
 
-    api.media_upload(plt.show())
+    api.media_upload(f"{today}_hourplt.png")
 
-
-
-
-
-schedule.every().day.at("12:00").do(job)
+# schedule.every().day.at("12:00").do(job)
 schedule.every(1).minutes.do(job)
 
 while 1:
