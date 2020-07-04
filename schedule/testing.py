@@ -26,4 +26,8 @@ auth.set_access_token(key, secret)
 api = tweepy.API(auth)
 
 # media = api.media_upload(f"{today}_hourplt.png")
-media = api.update_with_media(f"{today}_hourplt.png")
+# media = api.update_with_media(f"{today}_hourplt.png")
+
+
+
+print(datetime.datetime.today().day)

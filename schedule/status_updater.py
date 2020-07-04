@@ -108,9 +108,10 @@ def job():
 
     hour_range = range(0, 24)
 
-    #TODO set current date!!!
-    rep_temp = set(rep_date_list.get(17))
-    dem_temp = set(dem_date_list.get(17))
+    current_day = datetime.datetime.today().day
+
+    rep_temp = set(rep_date_list.get(current_day))
+    dem_temp = set(dem_date_list.get(current_day))
 
     rep_tweet_count = []
     dem_tweet_count = []
@@ -146,12 +147,12 @@ def job():
 
     api.media_upload(f"{today}_hourplt.png")
 
-# schedule.every().day.at("12:00").do(job)
-schedule.every(1).minutes.do(job)
+schedule.every().day.at("23:00").do(job)
+# schedule.every(1).minutes.do(job)
 
 while 1:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep(3600)
 
 # parse user names out of the dataframe
 
