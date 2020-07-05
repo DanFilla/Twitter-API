@@ -17,8 +17,8 @@ import time
 plt.close('all')
 
 def job():
-    dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data_former.csv")
-    rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data_former.csv")
+    dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
+    rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data.csv")
 
     #Democrate day and hour tweet dataframe. key = day value = hour.
     dem_date_list = {}
@@ -85,6 +85,8 @@ def job():
     api = tweepy.API(auth)
 
     api.media_upload(f"{today}_hourplt.png")
+
+print("Initalizing Schedule...")
 
 schedule.every().day.at("23:00").do(job)
 
