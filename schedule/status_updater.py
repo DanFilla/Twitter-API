@@ -16,7 +16,7 @@ import schedule
 import time
 plt.close('all')
 
-def job():
+def day():
     dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
     rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data.csv")
 
@@ -86,9 +86,15 @@ def job():
 
     api.media_upload(f"{today}_hourplt.png")
 
+def week():
+    pass
+
+
+
+
 print("Initalizing Schedule...")
 
-schedule.every().day.at("23:00").do(job)
+schedule.every().day.at("23:00").do(day)
 
 while 1:
     schedule.run_pending()

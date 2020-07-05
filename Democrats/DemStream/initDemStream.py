@@ -43,8 +43,7 @@ while(1):
         print("connecting to Democate Stream...")
         myStream.filter(dem_id_list)
     except:
-        pass
+        logging.error(f"Democate Stream Failed {datetime.datetime.now()}")
+        time.sleep(10)
 
-    logging.error(f"Democate Stream Failed {datetime.datetime.now()}")
-    time.sleep(10)
 

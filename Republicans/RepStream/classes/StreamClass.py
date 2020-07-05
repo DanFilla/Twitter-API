@@ -16,17 +16,17 @@ def from_creator(status):
 
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        fieldnames = ["user_name", "status", "datetime"]
-        opened_file = open("Republicans/data/rep_data/rep_status_data.csv", "a")
-        tweet_data = csv.DictWriter(opened_file, fieldnames=fieldnames)
-
-        user_name = status._json['user']['name']
-        date_time = datetime.datetime.now()
 
         if (from_creator(status)):
 
-            print("Some douche-bag tweeted!!!")
-            print(user_name)
+            fieldnames = ["user_name", "status", "datetime"]
+            opened_file = open("Republicans/data/rep_data/rep_status_data.csv", "a")
+            tweet_data = csv.DictWriter(opened_file, fieldnames=fieldnames)
+
+            user_name = status._json['user']['name']
+            date_time = datetime.datetime.now()
+
+            print(f"Senator {user_name} has tweeted from the Republican party.")
 
             if hasattr(status, "retweeted_status"):
                 try:

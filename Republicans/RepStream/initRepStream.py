@@ -47,7 +47,6 @@ while(1):
         print("connecting to Republican stream...")
         myStream.filter(rep_id_list)
     except:
-        pass
+        logging.error(f"Republican Stream Failed {datetime.datetime.now()}")
+        time.sleep(10)
 
-    logging.error(f"Republican Stream Failed {datetime.datetime.now()}")
-    time.sleep(10)
