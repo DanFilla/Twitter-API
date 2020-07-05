@@ -59,12 +59,12 @@ def job():
         if num not in rep_temp:
             rep_tweet_count.append(0)
         else:
-            rep_tweet_count.append(rep_date_list.get(18).count(num))
+            rep_tweet_count.append(rep_date_list.get(current_day).count(num))
 
         if num not in dem_temp:
             dem_tweet_count.append(0)
         else:
-            dem_tweet_count.append(dem_date_list.get(18).count(num))
+            dem_tweet_count.append(dem_date_list.get(current_day).count(num))
 
     #Save the plot
     plt.plot(hour_range, rep_tweet_count, label="Republican", color="r")
