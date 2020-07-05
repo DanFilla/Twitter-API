@@ -27,7 +27,6 @@ class MyStreamListener(tweepy.StreamListener):
             date_time = datetime.datetime.now()
 
             print(f"Senator {user_name} has tweeted from the Democrat party.")
-            print(user_name)
 
             if hasattr(status, "retweeted_status"):
                 try:
