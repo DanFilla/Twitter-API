@@ -16,35 +16,56 @@ import schedule
 import time
 plt.close('all')
 
+def trending_words(rep, dem):
+    status_list_rep = []
+    status_list_dem = []
+    status_dict = {}
 
-def trending_words(data):
-    status_list = []
-
-    for status in data['status']:
+    for status in rep['status']:
         for word in status.split():
             token = nltk.word_tokenize(word)
             tagged = nltk.pos_tag(token)
             if tagged[0][1][0] == 'N' and word[0] != "@" and word[:4].lower() != "http":
-                status_list.append(word.lower())
+                status_list_rep.append(word.lower())
 
-    word_dict = {}
+    for status in dem['status']:
+        for word in status.split():
+            token = nltk.word_tokenize(word)
+            tagged = nltk.pos_tag(token)
+            if tagged[0][1][0] == 'N' and word[0] != "@" and word[:4].lower() != "http":
+                status_list_dem.append(word.lower())
 
-    for word in status_list:
-        if word not in word_dict.keys():
-            word_dict[word] = 0
+    word_dict_rep = {}
+    word_dict_dem = {}
+
+    for word in status_list_rep:
+        if word not in word_dict_rep.keys():
+            word_dict_rep[word] = 0
         else:
-            word_dict[word] = word_dict.get(word) + 1
+            word_dict_rep[word] = word_dict_rep.get(word) + 1
 
-    word_dict = sorted(word_dict.items(), key=lambda x: x[1], reverse=True)
+    for word in status_list_dem:
+        if word not in word_dict_dem.keys():
+            word_dict_dem[word] = 0
+        else:
+            word_dict_dem[word] = word_dict_dem.get(word) + 1
 
-    tweet = ""
+    word_dict_rep = sorted(word_dict_rep.items(), key=lambda x: x[1], reverse=True)
+    word_dict_dem = sorted(word_dict_dem.items(), key=lambda x: x[1], reverse=True)
 
-    for tup in word_dict[:10]:
-        tweet += str(tup[0]) + " => " + str(tup[1]) + "\n"
+    tweet = "Republicans:\n"
+    for tup in word_dict_rep[:10]:
+        tweet += "\t" + str(tup[0]) + " => " + str(tup[1]) + "\n"
+
+    tweet += "\nDemocrats:\n"
+    for tup in word_dict_dem[:10]:
+        tweet += "\t" + str(tup[0]) + " => " + str(tup[1]) + "\n"
 
     return tweet
 
 
+
+#TODO change tweet collection to only pull one day of tweets not all of them.
 def day():
     dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
     rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data.csv")
@@ -119,35 +140,44 @@ def week():
     dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data_former.csv")
     rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data_former.csv")
 
-    #day and hour tweet dataframe. key = day
-    #                              value = array of the hours each tweet was tweeted.
-
-    rep_date_list = {}
-
-    for j in range(len(rep_df['datetime'])):
-        day = datetime.datetime.strptime(rep_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").day
-        rep_date_list[day] = []
-
-    for i in range(len(rep_df['datetime'])):
-        day = datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").day
-        hour = datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour
-        rep_date_list[day] = rep_date_list.get(day) + [hour]
-
-    dem_date_list = {}
-
-    for j in range(len(dem_df['datetime'])):
-        day = datetime.datetime.strptime(dem_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").day
-        dem_date_list[day] = []
-
-    for i in range(len(dem_df['datetime'])):
-        day = datetime.datetime.strptime(dem_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").day
-        hour = datetime.datetime.strptime(dem_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour
-        dem_date_list[day] = dem_date_list.get(day) + [hour]
-
     #Get week range.
     week_end = datetime.datetime.today()
     week_start = week_end - datetime.timedelta(days=7)
     week_range = range(week_start.day, week_end.day)
+
+    #Republican day and hour tweet dataframe. key = day
+#                                             value = array of the hours each tweet was tweeted.
+
+
+    #collecting tweet data for Republicans
+    rep_date_list = {}
+    for j in range(len(rep_df['datetime'])-1, 0, -1):
+        day = datetime.datetime.strptime(rep_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").day
+        if day == week_start.day-1:
+            break
+        rep_date_list[day] = []
+
+    for i in range(len(rep_df['datetime'])-1, 0, -1):
+        day = datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").day
+        hour = datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour
+        if day == week_start.day-1:
+            break
+        rep_date_list[day] = rep_date_list.get(day) + [hour]
+
+    #Collecting tweet data for Democrats
+    dem_date_list = {}
+    for j in range(len(dem_df['datetime'])-1, 0, -1):
+        day = datetime.datetime.strptime(dem_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").day
+        if day == week_start.day-1:
+            break
+        dem_date_list[day] = []
+
+    for i in range(len(dem_df['datetime'])-1, 0, -1):
+        day = datetime.datetime.strptime(dem_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").day
+        hour = datetime.datetime.strptime(dem_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour
+        if day == week_start.day-1:
+            break
+        dem_date_list[day] = dem_date_list.get(day) + [hour]
 
     rep_week_plot = []
     dem_week_plot = []
