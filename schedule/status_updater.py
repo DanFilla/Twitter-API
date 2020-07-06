@@ -9,12 +9,41 @@ from secret_keys import *
 import numpy as np
 import pandas as pd
 import datetime
-# import nltk; nltk.download('popular')
+import nltk; nltk.download('word_tokenize', 'pos_tag')
 from collections import defaultdict
 import matplotlib.pyplot as plt
 import schedule
 import time
 plt.close('all')
+
+
+def trending_words(data):
+    status_list = []
+
+    for status in data['status']:
+        for word in status.split():
+            token = nltk.word_tokenize(word)
+            tagged = nltk.pos_tag(token)
+            if tagged[0][1][0] == 'N' and word[0] != "@" and word[:4].lower() != "http":
+                status_list.append(word.lower())
+
+    word_dict = {}
+
+    for word in status_list:
+        if word not in word_dict.keys():
+            word_dict[word] = 0
+        else:
+            word_dict[word] = word_dict.get(word) + 1
+
+    word_dict = sorted(word_dict.items(), key=lambda x: x[1], reverse=True)
+
+    tweet = ""
+
+    for tup in word_dict[:10]:
+        tweet += str(tup[0]) + " => " + str(tup[1]) + "\n"
+
+    return tweet
+
 
 def day():
     dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
@@ -84,7 +113,7 @@ def day():
 
     api = tweepy.API(auth)
 
-    api.media_upload(f"{today}_hourplt.png")
+    api.media_upload(f"{today}_hourplt.png", status=trending_words(rep_df, dem_df))
 
 def week():
     dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data_former.csv")
@@ -140,7 +169,7 @@ def week():
 
     api = tweepy.API(auth)
 
-    api.media_upload(f"{today}_weekplt.png")
+    api.media_upload(f"{today}_weekplt.png", status=trending_words(rep_df, dem_df))
 
 print("Initalizing Schedule...")
 
@@ -150,4 +179,3 @@ schedule.every().sunday.at("23:00").do(week)
 while 1:
     schedule.run_pending()
     time.sleep(3600)
-
