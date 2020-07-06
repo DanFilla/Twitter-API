@@ -26,13 +26,19 @@ myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 
 rep_id_list = []
 
-# with open("Republican/data/rep_data/rep_status_data.csv", "a") as csv_file:
-    # if os.stat("Republican/data/rep_data/rep_status_data.csv") == 0:
-        # fieldnames = ["user_name", "status", "datetime"]
-        # writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        # writer.writeheader()
-    # else:
-        # pass
+with open("Republicans/data/rep_data/rep_status_data.csv", newline='') as csv_file:
+    rea = csv.reader(csv_file)
+    has_header = False
+    for x in rea:
+        if x == ['user_name', 'status', 'datetime']:
+            has_header = True
+        break
+
+if not has_header:
+    with open("Republicans/data/rep_data/rep_status_data.csv", "w") as csv_file:
+            fieldnames = ["user_name", "status", "datetime"]
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+            writer.writeheader()
 
 #parse through senator data file to get twitter user id
 with open("Republicans/data/rep_data/rep_ids.txt", "r") as data:

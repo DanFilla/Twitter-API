@@ -3,6 +3,7 @@ import threading
 import logging
 import datetime
 import time
+import csv
 import os
 from Democrats.DemStream.classes.StreamClass import MyStreamListener
 
@@ -25,10 +26,19 @@ myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 
 dem_id_list = []
 
-# with open("Democrats/data/dem_data/dem_status_data.csv", "a") as csv_file:
-    # fieldnames = ["user_name", "status", "datetime"]
-    # writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    # writer.writeheader()
+with open("Democrats/data/dem_data/dem_status_data.csv", newline='') as csv_file:
+    rea = csv.reader(csv_file)
+    has_header = False
+    for x in rea:
+        if x == ['user_name', 'status', 'datetime']:
+            has_header = True
+        break
+
+if not has_header:
+    with open("Democrats/data/dem_data/dem_status_data.csv", "w") as csv_file:
+            fieldnames = ["user_name", "status", "datetime"]
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+            writer.writeheader()
 
 #parse through senator data file to get twitter user id
 with open("Democrats/data/dem_data/dem_ids.txt", "r") as data:
