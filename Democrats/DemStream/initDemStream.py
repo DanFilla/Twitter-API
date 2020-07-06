@@ -26,6 +26,9 @@ myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 
 dem_id_list = []
 
+#create file just in case it is not there.
+open("Democrats/data/dem_data/dem_status_data.csv", "a").close()
+
 with open("Democrats/data/dem_data/dem_status_data.csv", newline='') as csv_file:
     rea = csv.reader(csv_file)
     has_header = False

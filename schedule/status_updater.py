@@ -150,7 +150,8 @@ def day():
     api = tweepy.API(auth)
 
     api.update_with_media(f"{today}_hourplt.png", status=trending_words(rep_df, dem_df))
-    # api.update_with_media(f"Schedule/{today}_hourplt.png")
+
+    os.remove("{today}_hourplt.png")
 
 def week():
     dem_df = pd.read_csv("Democrats/data/dem_data/dem_status_data.csv")
@@ -216,6 +217,10 @@ def week():
     api = tweepy.API(auth)
 
     api.media_upload(f"{today}_weekplt.png", status=trending_words(rep_df, dem_df))
+
+    os.remove("{today}_weekplt.png")
+    rep_df = pd.DataFrame(columns=rep_df.columns)
+    dem_df = pd.DataFrame(columns-dem_df.columns)
 
 print("Initalizing Schedule...")
 
