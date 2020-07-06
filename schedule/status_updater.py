@@ -9,7 +9,7 @@ from secret_keys import *
 import numpy as np
 import pandas as pd
 import datetime
-import nltk; nltk.download('word_tokenize', 'pos_tag')
+import nltk; nltk.download('popular')
 from collections import defaultdict
 import matplotlib.pyplot as plt
 import schedule
@@ -65,39 +65,47 @@ def trending_words(rep, dem):
 
 
 
-#TODO change tweet collection to only pull one day of tweets not all of them.
 def day():
     dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
     rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data.csv")
 
+    current_day = datetime.datetime.today().day
+    hour_range = range(0, 24)
+
     #Democrate day and hour tweet dataframe. key = day value = hour.
+
     dem_date_list = {}
 
-    for j in range(len(dem_df['datetime'])):
+    for j in range(len(dem_df['datetime'])-1, 0, -1):
         day = datetime.datetime.strptime(dem_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").day
+        if day == current_day-1:
+            break
         dem_date_list[day] = []
 
-    for i in range(len(dem_df['datetime'])):
+    for i in range(len(dem_df['datetime'])-1, 0, -1):
         day = datetime.datetime.strptime(dem_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").day
         hour = datetime.datetime.strptime(dem_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour
+        if day == current_day-1:
+            break
         dem_date_list[day] = dem_date_list.get(day) + [hour]
 
     #Republican day and hour tweet dataframe. key = day
     #                                         value = array of the hours each tweet was tweeted.
     rep_date_list = {}
 
-    for j in range(len(rep_df['datetime'])):
+    for j in range(len(rep_df['datetime'])-1, 0, -1):
         day = datetime.datetime.strptime(rep_df['datetime'].iloc[j], "%Y-%m-%d %H:%M:%S.%f").day
+        if day == current_day-1:
+            break
         rep_date_list[day] = []
 
-    for i in range(len(rep_df['datetime'])):
+    for i in range(len(rep_df['datetime'])-1, 0, -1):
         day = datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").day
         hour = datetime.datetime.strptime(rep_df['datetime'].iloc[i], "%Y-%m-%d %H:%M:%S.%f").hour
+        if day == current_day-1:
+            break
         rep_date_list[day] = rep_date_list.get(day) + [hour]
 
-    hour_range = range(0, 24)
-
-    current_day = datetime.datetime.today().day
 
     rep_temp = set(rep_date_list.get(current_day))
     dem_temp = set(dem_date_list.get(current_day))
@@ -137,8 +145,8 @@ def day():
     api.media_upload(f"{today}_hourplt.png", status=trending_words(rep_df, dem_df))
 
 def week():
-    dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data_former.csv")
-    rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data_former.csv")
+    dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
+    rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data.csv")
 
     #Get week range.
     week_end = datetime.datetime.today()
