@@ -6,6 +6,8 @@ import sys
 sys.path.append('/Users/dan/Desktop/Twitter-API/keys')
 from secret_keys import *
 
+import matplotlib
+
 import numpy as np
 import pandas as pd
 import datetime
@@ -15,6 +17,7 @@ import matplotlib.pyplot as plt
 import schedule
 import time
 plt.close('all')
+matplotlib.use('Agg')
 
 def trending_words(rep, dem):
     status_list_rep = []
@@ -66,8 +69,8 @@ def trending_words(rep, dem):
 
 
 def day():
-    dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
-    rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data.csv")
+    dem_df = pd.read_csv("Democrats/data/dem_data/dem_status_data.csv")
+    rep_df = pd.read_csv("Republicans/data/rep_data/rep_status_data.csv")
 
     current_day = datetime.datetime.today().day
     hour_range = range(0, 24)
@@ -107,6 +110,7 @@ def day():
         rep_date_list[day] = rep_date_list.get(day) + [hour]
 
 
+
     rep_temp = set(rep_date_list.get(current_day))
     dem_temp = set(dem_date_list.get(current_day))
 
@@ -134,7 +138,7 @@ def day():
     today = datetime.datetime.today()
     today = today.strftime(today.strftime("%b-%d-%Y"))
 
-    plt.savefig(f"{today}_hourplt.png", bbox_inches="tight")
+    plt.savefig(f"Schedule/{today}_hourplt.png", bbox_inches="tight")
 
     # Tweet the plot.
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -142,11 +146,12 @@ def day():
 
     api = tweepy.API(auth)
 
-    api.media_upload(f"{today}_hourplt.png", status=trending_words(rep_df, dem_df))
+    api.update_with_media(f"{today}_hourplt.png", status=trending_words(rep_df, dem_df))
+    # api.update_with_media(f"Schedule/{today}_hourplt.png")
 
 def week():
-    dem_df = pd.read_csv("../Democrats/data/dem_data/dem_status_data.csv")
-    rep_df = pd.read_csv("../Republicans/data/rep_data/rep_status_data.csv")
+    dem_df = pd.read_csv("Democrats/data/dem_data/dem_status_data.csv")
+    rep_df = pd.read_csv("Republicans/data/rep_data/rep_status_data.csv")
 
     #Get week range.
     week_end = datetime.datetime.today()
@@ -215,5 +220,6 @@ schedule.every().day.at("23:00").do(day)
 schedule.every().sunday.at("23:00").do(week)
 
 while 1:
+    print("Sleeping!!!")
     schedule.run_pending()
     time.sleep(3600)
