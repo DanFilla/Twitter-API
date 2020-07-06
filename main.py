@@ -1,3 +1,4 @@
+from keys import secret_keys
 import threading
 
 def democrat_stream():

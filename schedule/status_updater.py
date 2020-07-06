@@ -2,12 +2,9 @@
 # coding: utf-8
 import tweepy
 
-import sys
-sys.path.append('/Users/dan/Desktop/Twitter-API/keys')
-from secret_keys import *
-
 import matplotlib
 
+import os
 import numpy as np
 import pandas as pd
 import datetime
@@ -18,6 +15,12 @@ import schedule
 import time
 plt.close('all')
 matplotlib.use('Agg')
+
+consumer_key = os.environ["CONSUMER_KEY"]
+consumer_secret = os.environ["CONSUMER_SECRET"]
+
+key = os.environ["KEY"]
+secret = os.environ["SECRET"]
 
 def trending_words(rep, dem):
     status_list_rep = []

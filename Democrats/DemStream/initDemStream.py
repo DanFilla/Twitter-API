@@ -1,15 +1,18 @@
-import sys
-sys.path.append('/Users/dan/Desktop/Twitter-API/keys')
 import tweepy
 import threading
 import logging
 import datetime
 import time
 import os
-from secret_keys import *
 from Democrats.DemStream.classes.StreamClass import MyStreamListener
 
 logging.basicConfig(filename="logging-files/dem_logs.log")
+
+consumer_key = os.environ["CONSUMER_KEY"]
+consumer_secret = os.environ["CONSUMER_SECRET"]
+
+key = os.environ["KEY"]
+secret = os.environ["SECRET"]
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(key, secret)
